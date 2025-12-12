@@ -1,0 +1,7 @@
+/data/test/box/*.txt
+/data/test/entities/*.txt
+/data/train/entities/*.txt
+/data/train/box/*.txt
+/data/train/img/*.jpg
+/data/test/img/*.jpg
+/data/layoutlm-base-uncased
