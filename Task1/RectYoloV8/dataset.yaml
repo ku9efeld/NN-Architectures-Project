@@ -1,0 +1,5 @@
+train: ../yolo_obb_dataset/images/train
+val: ../yolo_obb_dataset/images/val
+
+nc: 1
+names: ['word']
