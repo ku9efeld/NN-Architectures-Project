@@ -5,7 +5,6 @@
 /data/train/img/*.jpg
 /data/test/img/*.jpg
 /data/layoutlm-base-uncased
-/data/splits
 Task1/RectYoloV8/yolo_obb_dataset
 Task1/RectYoloV8/runs
 Task1/RectYoloV8/yolov8n-obb.pt
