@@ -4,15 +4,30 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+from string import ascii_uppercase, digits, punctuation
+
+valid_chars = ascii_uppercase + digits + punctuation + " \t\n"
 
 
+SPLIT_DIR = "./data/splits"
 
 class SROIEDataset(Dataset):
-    def __init__(self, image_dir, annotation_dir, target_size=(800, 600)):
+    def __init__(self, split, image_dir, annotation_dir, target_size=(800, 600)):
         self.image_dir = image_dir
         self.annotation_dir = annotation_dir
         self.target_size = target_size  # (width, height)
-        self.image_files = sorted([f for f in os.listdir(image_dir) 
+        root=None
+        if split == 'train':
+            root = "../../data/splits/train_files.txt"
+        elif split == 'val':
+            root = "../../data/splits/val_files.txt"
+        if root is not None:
+            with open(root, 'r', encoding='utf-8') as f:
+                mask_files = [line.strip() for line in f if line.strip()]
+            self.image_files = sorted([ f for f in os.listdir(image_dir) 
+                            if f.lower().endswith(('.jpg', '.jpeg', '.png')) and f in mask_files])
+        else:
+            self.image_files = sorted([ f for f in os.listdir(image_dir) 
                                  if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
     
     def __len__(self):
@@ -36,26 +51,38 @@ class SROIEDataset(Dataset):
         boxes = []  # Конвертированные в горизонтальные прямоугольники
         original_quads = []  # Оригинальные квадроугольники
         texts = []
-        
-        with open(ann_path, 'r', encoding='utf-8') as f:
-            for line in f:
-                parts = line.strip().split(',', 8)
-                if len(parts) == 9:
-                    # Оригинальный квадроугольник
-                    quad = list(map(float, parts[:8]))
-                    text = parts[8]
-                    
-                    # Конвертируем в горизонтальный прямоугольник и масштабируем
-                    rect = self._quad_to_rect(quad)
-                    rect[0] *= scale_w  # x_min
-                    rect[1] *= scale_h  # y_min
-                    rect[2] *= scale_w  # x_max
-                    rect[3] *= scale_h  # y_max
-                    
-                    boxes.append(rect)
-                    original_quads.append(quad)
-                    texts.append(text)
-        
+
+            # Пробуем разные кодировки
+   
+        content = None
+        for encoding in ['utf-8', 'latin-1', 'cp1252']:
+            try:
+                    with open(ann_path, 'r', encoding=encoding) as f:
+                        for line_no, line in enumerate(f):
+                            parts = line.strip().split(',', 8)
+                            for c in parts[-1]:
+                                if not c in valid_chars:
+                                    print(f"Invalid char {repr(c)} in {f.name} on line {line_no}")
+                            if len(parts) == 9:
+                                # Оригинальный квадроугольник
+                                quad = list(map(float, parts[:8]))
+                                text = parts[8]
+                                
+                                # Конвертируем в горизонтальный прямоугольник и масштабируем
+                                rect = self._quad_to_rect(quad)
+                                rect[0] *= scale_w  # x_min
+                                rect[1] *= scale_h  # y_min
+                                rect[2] *= scale_w  # x_max
+                                rect[3] *= scale_h  # y_max
+                                
+                                boxes.append(rect)
+                                original_quads.append(quad)
+                                texts.append(text)
+            except UnicodeDecodeError:
+                print(f'Ошибка с {encoding}')
+                continue
+   
+ 
         # Преобразование изображения в тензор
         image_tensor = torch.from_numpy(image).permute(2, 0, 1).float() / 255.0
         
