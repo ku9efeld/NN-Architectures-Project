@@ -8,4 +8,4 @@
 Task1/RectYoloV8/yolo_obb_dataset
 Task1/RectYoloV8/runs
 Task1/RectYoloV8/yolov8n-obb.pt
-Task1/RectCTPN/best_ctpn_model.pt
+Task1/RectCTPN/best_ctpn_model.pth
