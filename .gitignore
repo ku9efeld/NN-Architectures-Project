@@ -16,3 +16,4 @@ Task1/RectCTPN/best_ctpn_model.pth
 /data/crops
 Task2/CRNN_CTC/pretrained
 *__pycache__*
+infer
