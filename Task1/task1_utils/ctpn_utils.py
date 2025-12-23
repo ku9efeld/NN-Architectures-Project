@@ -149,9 +149,9 @@ def bbox_transfor_inv(anchor, regr):
     hx = np.exp(Vhx) * ha
     xt = (anchor[:, 0] + anchor[:, 2]) * 0.5
 
-    x1 = xt - 16 * 0.5
+    x1 = xt - 8 * 0.5
     y1 = Cyx - hx * 0.5
-    x2 = xt + 16 * 0.5
+    x2 = xt + 8 * 0.5
     y2 = Cyx + hx * 0.5
     bbox = np.vstack((x1, y1, x2, y2)).transpose()
 
