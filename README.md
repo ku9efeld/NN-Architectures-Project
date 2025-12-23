@@ -5,7 +5,7 @@
 Были обучены следующие виды архитектур
 - YoloV8 (20 epoch, 3 M параметров)
 - EasyOCR (5 epoch, 2.6 M параметров)
-- CTPN (5 epoch, 10,6 M параметров), stride = 8, encoder из первых 23 слоев vga-16 
+- CTPN (5 epoch, 10,6 M параметров), stride = 8, encoder из первых 23 слоев VGG-16 
 
 ![alt text](img_for_readme/vis_X00016469670.jpg)
 
