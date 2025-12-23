@@ -7,11 +7,11 @@
 - EasyOCR (5 epoch, 2.6 M параметров)
 - CTPN (5 epoch, 10,6 M параметров), stride = 8, encoder из первых 23 слоев vga-16 
 
-![alt text](img for readme/vis_X00016469670.jpg)
+![alt text](img_for_readme/vis_X00016469670.jpg)
 
-![alt text](img for readme/vis_X51005444044.jpg)
+![alt text](img_for_readme/vis_X51005444044.jpg)
 
-![alt text](img for readme/vis_X51005677336.jpg)
+![alt text](img_for_readme/vis_X51005677336.jpg)
 
 Сравнительный анализ на тестовой части датасета:
 
